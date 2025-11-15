@@ -5,8 +5,8 @@ const app = express();
 app.use(express.json());
 
 // CONFIG DA Z-API
-const INSTANCE_ID = "SEU_ID_AQUI";
-const API_TOKEN = "SEU_TOKEN_AQUI";
+const INSTANCE_ID = "3EA402CE4F8B314C62CB3A63791FAAD1";
+const API_TOKEN = "D37AE45439275978CAF63FE8";
 const API_URL = `https://api.z-api.io/instances/${INSTANCE_ID}/token/${API_TOKEN}`;
 
 async function enviarMensagem(numero, texto) {
@@ -121,6 +121,7 @@ app.post("/webhook", async (req, res) => {
 app.listen(process.env.PORT || 3000, () => {
     console.log("BOT rodando na porta " + (process.env.PORT || 3000));
 });
+
 
 
 
