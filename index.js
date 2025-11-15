@@ -1,4 +1,4 @@
-﻿const express = require("express");
+const express = require("express");
 const axios = require("axios");
 const app = express();
 
@@ -7,8 +7,7 @@ app.use(express.json());
 // CONFIG DA Z-API
 const INSTANCE_ID = "3EA402CE4F8B314C62CB3A63791FAAD1";
 const API_TOKEN = "D37AE45439275978CAF63FE8";
-const API_URL = "https://api.z-api.io/instances/3EA402CE4F8B314C62CB3A63791FAAD1/token/D37AE45439275978CAF63FE8";
-
+const API_URL = "https://api.z-api.io/instances/" + INSTANCE_ID + "/token/" + API_TOKEN;
 
 async function enviarMensagem(numero, texto) {
     await axios.post(API_URL + "/send-message", {
@@ -17,7 +16,7 @@ async function enviarMensagem(numero, texto) {
     });
 }
 
-
+// WEBHOOK
 app.post("/webhook", async (req, res) => {
     const data = req.body;
 
@@ -29,10 +28,8 @@ app.post("/webhook", async (req, res) => {
 
     if (!texto) return res.sendStatus(200);
 
-    // ===========================
     // MENU PRINCIPAL
-    // ===========================
-    if (texto === "menu" || texto === "Menu" || texto === "MENU") {
+    if (texto.toLowerCase() === "menu") {
         enviarMensagem(numero, 
             "Olá 👋 bem-vindo à Barbearia do Tiago 💈\n\n" +
             "1️⃣ Ver preços\n" +
@@ -43,9 +40,7 @@ app.post("/webhook", async (req, res) => {
         return res.sendStatus(200);
     }
 
-    // ===========================
     // OPÇÃO 1 — PREÇOS
-    // ===========================
     if (texto === "1") {
         enviarMensagem(numero,
             "💈 *Tabela de Preços*\n\n" +
@@ -56,9 +51,7 @@ app.post("/webhook", async (req, res) => {
         return res.sendStatus(200);
     }
 
-    // ===========================
-    // OPÇÃO 2 — AGENDAR HORÁRIO
-    // ===========================
+    // OPÇÃO 2 — AGENDAR
     if (texto === "2") {
         enviarMensagem(numero, 
             "📅 Vamos agendar seu horário!\n" +
@@ -66,7 +59,6 @@ app.post("/webhook", async (req, res) => {
         return res.sendStatus(200);
     }
 
-    // se o texto contém barra, assume que é uma data
     if (texto.includes("/")) {
         enviarMensagem(numero,
             "Agora me diga o horário que você quer (ex: 14:30)");
@@ -81,9 +73,7 @@ app.post("/webhook", async (req, res) => {
         return res.sendStatus(200);
     }
 
-    // ===========================
-    // OPÇÃO 3 — LOCALIZAÇÃO
-    // ===========================
+    // LOCALIZAÇÃO
     if (texto === "3") {
         enviarMensagem(numero,
             "📍 *Localização da Barbearia*\n" +
@@ -92,9 +82,7 @@ app.post("/webhook", async (req, res) => {
         return res.sendStatus(200);
     }
 
-    // ===========================
-    // OPÇÃO 4 — PROMOÇÕES
-    // ===========================
+    // PROMOÇÕES
     if (texto === "4") {
         enviarMensagem(numero,
             "🔥 Promoções da Semana\n\n" +
@@ -104,26 +92,21 @@ app.post("/webhook", async (req, res) => {
         return res.sendStatus(200);
     }
 
-    // ===========================
-    // OPÇÃO 0 — FALAR COM VOCÊ
-    // ===========================
+    // FALAR COM VOCÊ
     if (texto === "0") {
         enviarMensagem(numero,
             "🔊 Vou te passar para o Tiago agora, só um momento!");
         return res.sendStatus(200);
     }
 
-    // Resposta padrão
+    // PADRÃO
     enviarMensagem(numero,
         "Não entendi 🤔\nDigite *menu* para ver as opções.");
 
     res.sendStatus(200);
 });
 
+// SUBIR SERVIDOR
 app.listen(process.env.PORT || 3000, () => {
     console.log("BOT rodando na porta " + (process.env.PORT || 3000));
 });
-
-
-
-
