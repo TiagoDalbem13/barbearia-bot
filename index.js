@@ -7,14 +7,16 @@ app.use(express.json());
 // CONFIG DA Z-API
 const INSTANCE_ID = "3EA402CE4F8B314C62CB3A63791FAAD1";
 const API_TOKEN = "D37AE45439275978CAF63FE8";
-const API_URL = `https://api.z-api.io/instances/3EA402CE4F8B314C62CB3A63791FAAD1/token/D37AE45439275978CAF63FE8/send-text;
+const API_URL = "https://api.z-api.io/instances/3EA402CE4F8B314C62CB3A63791FAAD1/token/D37AE45439275978CAF63FE8";
+
 
 async function enviarMensagem(numero, texto) {
     await axios.post(API_URL + "/send-message", {
-    phone: numero,
-    message: texto
-});
+        phone: numero,
+        message: texto
+    });
 }
+
 
 app.post("/webhook", async (req, res) => {
     const data = req.body;
@@ -121,10 +123,6 @@ app.post("/webhook", async (req, res) => {
 app.listen(process.env.PORT || 3000, () => {
     console.log("BOT rodando na porta " + (process.env.PORT || 3000));
 });
-
-
-
-
 
 
 
